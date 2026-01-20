@@ -447,6 +447,97 @@ describe("TreeNode", () => {
     });
   });
 
+  describe(".toNestedArray", () => {
+    it("returns value for leaf node", () => {
+      const leaf = new TreeNode<string>("leaf");
+      expect(leaf.toNestedArray()).toEqual("leaf");
+    });
+
+    it("returns flat array for chain", () => {
+      const node = new TreeNode<number>(1);
+      node.addModel(2).addModel(3);
+      expect(node.toNestedArray()).toEqual([1, 2, 3]);
+    });
+
+    it("wraps multiple leaf children", () => {
+      const node = new TreeNode<number>(1);
+      node.addModel(2);
+      node.addModel(3);
+      node.addModel(4);
+      expect(node.toNestedArray()).toEqual([1, [2, 3, 4]]);
+    });
+
+    it("spreads mixed children", () => {
+      // Tree: 1 -> {11 -> {111, 112}, 12}
+      expect(root.toNestedArray()).toEqual([
+        "1",
+        ["11", ["111", "112"]],
+        "12",
+      ]);
+    });
+
+    it("handles single non-leaf child", () => {
+      const node = new TreeNode<number>(1);
+      const child = node.addModel(2);
+      child.addModel(3);
+      child.addModel(4);
+      expect(node.toNestedArray()).toEqual([1, 2, [3, 4]]);
+    });
+  });
+
+  describe(".fromNestedArray", () => {
+    it("parses leaf value", () => {
+      const node = TreeNode.fromNestedArray<string>("leaf");
+      expect(node.model).toEqual("leaf");
+      expect(node.isLeaf).toBe(true);
+    });
+
+    it("parses chain", () => {
+      const node = TreeNode.fromNestedArray<number>([1, 2, 3]);
+      expect(node.model).toEqual(1);
+      expect(node.children.length).toEqual(1);
+      expect(node.children[0].model).toEqual(2);
+      expect(node.children[0].children[0].model).toEqual(3);
+    });
+
+    it("parses multiple leaf children", () => {
+      const node = TreeNode.fromNestedArray<number>([1, [2, 3, 4]]);
+      expect(node.model).toEqual(1);
+      expect(node.children.length).toEqual(3);
+      expect(node.children.map((c) => c.model)).toEqual([2, 3, 4]);
+      expect(node.children.every((c) => c.isLeaf)).toBe(true);
+    });
+
+    it("parses mixed children", () => {
+      const node = TreeNode.fromNestedArray<string>([
+        "1",
+        ["11", ["111", "112"]],
+        "12",
+      ]);
+      expect(node.toObject()).toEqual(root.toObject());
+    });
+
+    it("parses single non-leaf child with nested leaves", () => {
+      const node = TreeNode.fromNestedArray<number>([1, [2, [3, 4]]]);
+      expect(node.model).toEqual(1);
+      expect(node.children.length).toEqual(1);
+      expect(node.children[0].model).toEqual(2);
+      expect(node.children[0].children.map((c) => c.model)).toEqual([3, 4]);
+    });
+
+    it("parses node with no children", () => {
+      const node = TreeNode.fromNestedArray<number>([1]);
+      expect(node.model).toEqual(1);
+      expect(node.isLeaf).toBe(true);
+    });
+
+    it("roundtrips correctly", () => {
+      const nested = root.toNestedArray();
+      const restored = TreeNode.fromNestedArray<string>(nested);
+      expect(restored.toObject()).toEqual(root.toObject());
+    });
+  });
+
   describe(".toObject", () => {
     it("converts a node to an object", () => {
       expect(tree).toEqual(root.toObject());
