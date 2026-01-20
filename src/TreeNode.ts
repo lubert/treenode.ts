@@ -91,6 +91,47 @@ export class TreeNode<T> {
   }
 
   /**
+   * Returns true if the node is the root (has no parent).
+   */
+  get isRoot(): boolean {
+    return this.parent === null;
+  }
+
+  /**
+   * Returns true if the node is a leaf (has no children).
+   */
+  get isLeaf(): boolean {
+    return !this.hasChildren;
+  }
+
+  /**
+   * Returns the root node of the tree.
+   */
+  get root(): TreeNode<T> {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    let node: TreeNode<T> = this;
+    while (node.parent) {
+      node = node.parent;
+    }
+    return node;
+  }
+
+  /**
+   * Returns the depth of the node (root is 0).
+   */
+  get depth(): number {
+    return this.parent ? this.parent.depth + 1 : 0;
+  }
+
+  /**
+   * Returns siblings of this node (excluding self).
+   */
+  get siblings(): TreeNode<T>[] {
+    if (this.isRoot) return [];
+    return this.parent!.children.filter((child) => child !== this);
+  }
+
+  /**
    * Add node as a child.
    */
   add(child: TreeNode<T>): TreeNode<T> {
@@ -111,12 +152,12 @@ export class TreeNode<T> {
    * Remove current node and its children from the tree and return.
    */
   drop(): TreeNode<T> {
-    if (this.parent !== null) {
+    if (!this.isRoot) {
       const idx = this._index;
-      this.parent.children.splice(idx, 1);
+      this.parent!.children.splice(idx, 1);
       // Update indices of subsequent siblings
-      for (let i = idx; i < this.parent.children.length; i++) {
-        this.parent.children[i]._index = i;
+      for (let i = idx; i < this.parent!.children.length; i++) {
+        this.parent!.children[i]._index = i;
       }
       this.parent = null;
       this._index = 0;
@@ -204,7 +245,7 @@ export class TreeNode<T> {
   /**
    * Iterates over a node's children and returns a new root node.
    */
-  async mapAsync<U>(callback: (node: TreeNode<T>, parent?: TreeNode<U>) => Promise<U>, parent?: TreeNode<U>): Promise<TreeNode<U>>{
+  async mapAsync<U>(callback: (node: TreeNode<T>, parent: TreeNode<U> | undefined) => Promise<U>, parent?: TreeNode<U>): Promise<TreeNode<U>>{
     const node = new TreeNode<U>(await callback(this, parent));
     node.children = await Promise.all(this.children.map(async (child, i) => {
       const newChild = await child.mapAsync(callback, node);
@@ -259,6 +300,24 @@ export class TreeNode<T> {
     if (callback(this)) return this;
 
     return null;
+  }
+
+  /**
+   * Find the first node matching the predicate.
+   */
+  find(predicate: (node: TreeNode<T>) => boolean, method: SearchStrategy = "pre"): TreeNode<T> | null {
+    return this[method]((node) => predicate(node));
+  }
+
+  /**
+   * Find all nodes matching the predicate.
+   */
+  findAll(predicate: (node: TreeNode<T>) => boolean, method: SearchStrategy = "pre"): TreeNode<T>[] {
+    const results: TreeNode<T>[] = [];
+    this[method]((node) => {
+      if (predicate(node)) results.push(node);
+    });
+    return results;
   }
 
   /**

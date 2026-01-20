@@ -194,6 +194,72 @@ describe("TreeNode", () => {
     });
   });
 
+  describe(".isRoot", () => {
+    it("returns true for root node", () => {
+      expect(root.isRoot).toEqual(true);
+    });
+
+    it("returns false for non-root nodes", () => {
+      expect(root.children[0].isRoot).toEqual(false);
+      expect(root.children[0].children[0].isRoot).toEqual(false);
+    });
+  });
+
+  describe(".isLeaf", () => {
+    it("returns true for leaf nodes", () => {
+      expect(root.children[1].isLeaf).toEqual(true);
+      expect(root.children[0].children[0].isLeaf).toEqual(true);
+    });
+
+    it("returns false for non-leaf nodes", () => {
+      expect(root.isLeaf).toEqual(false);
+      expect(root.children[0].isLeaf).toEqual(false);
+    });
+  });
+
+  describe(".root", () => {
+    it("returns self for root node", () => {
+      expect(root.root).toBe(root);
+    });
+
+    it("returns root from any descendant", () => {
+      expect(root.children[0].root).toBe(root);
+      expect(root.children[0].children[0].root).toBe(root);
+      expect(root.children[1].root).toBe(root);
+    });
+  });
+
+  describe(".depth", () => {
+    it("returns 0 for root", () => {
+      expect(root.depth).toEqual(0);
+    });
+
+    it("returns correct depth for descendants", () => {
+      expect(root.children[0].depth).toEqual(1);
+      expect(root.children[1].depth).toEqual(1);
+      expect(root.children[0].children[0].depth).toEqual(2);
+      expect(root.children[0].children[1].depth).toEqual(2);
+    });
+  });
+
+  describe(".siblings", () => {
+    it("returns empty array for root", () => {
+      expect(root.siblings).toEqual([]);
+    });
+
+    it("returns siblings excluding self", () => {
+      expect(root.children[0].siblings).toEqual([root.children[1]]);
+      expect(root.children[1].siblings).toEqual([root.children[0]]);
+      expect(root.children[0].children[0].siblings).toEqual([root.children[0].children[1]]);
+    });
+
+    it("returns empty array for only child", () => {
+      const node = new TreeNode<string>("root");
+      const child = node.addModel("only");
+      expect(child.siblings).toEqual([]);
+    });
+  });
+
   describe(".add", () => {
     it("adds a new node", () => {
       const node = new TreeNode<string>("1");
@@ -334,6 +400,50 @@ describe("TreeNode", () => {
         return node.model === "112";
       });
       expect(visited).toEqual(["111", "112"]);
+    });
+  });
+
+  describe(".find", () => {
+    it("finds first matching node with default pre-order", () => {
+      const found = root.find((node) => node.model.startsWith("11"));
+      expect(found?.model).toEqual("11");
+    });
+
+    it("returns null when no match", () => {
+      const found = root.find((node) => node.model === "nonexistent");
+      expect(found).toBeNull();
+    });
+
+    it("finds with breadth-first search", () => {
+      const found = root.find((node) => node.model.length === 3, "breadth");
+      expect(found?.model).toEqual("111");
+    });
+
+    it("finds with post-order search", () => {
+      const found = root.find((node) => node.model.startsWith("11"), "post");
+      expect(found?.model).toEqual("111");
+    });
+  });
+
+  describe(".findAll", () => {
+    it("finds all matching nodes with default pre-order", () => {
+      const found = root.findAll((node) => node.model.startsWith("11"));
+      expect(found.map((n) => n.model)).toEqual(["11", "111", "112"]);
+    });
+
+    it("returns empty array when no match", () => {
+      const found = root.findAll((node) => node.model === "nonexistent");
+      expect(found).toEqual([]);
+    });
+
+    it("finds all with breadth-first search", () => {
+      const found = root.findAll((node) => node.model.length === 2, "breadth");
+      expect(found.map((n) => n.model)).toEqual(["11", "12"]);
+    });
+
+    it("finds all with post-order search", () => {
+      const found = root.findAll((node) => node.isLeaf, "post");
+      expect(found.map((n) => n.model)).toEqual(["111", "112", "12"]);
     });
   });
 
