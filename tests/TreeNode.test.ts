@@ -45,6 +45,28 @@ describe("TreeNode", () => {
     });
   });
 
+  describe(".pathKey", () => {
+    it("returns the expected pathKey", () => {
+      expect(root.pathKey).toEqual("");
+      expect(root.children[0].pathKey).toEqual("1");
+      expect(root.children[0].children[0].pathKey).toEqual("2");
+      expect(root.children[0].children[1].pathKey).toEqual("1,-1");
+      expect(root.children[1].pathKey).toEqual("-1");
+    });
+  });
+
+  describe(".fetchByPathKey", () => {
+    it("returns the expected nodes", () => {
+      expect(root.fetchByPathKey("")).toEqual(root);
+      expect(root.fetchByPathKey("1")).toEqual(root.children[0]);
+      expect(root.fetchByPathKey("2")).toEqual(root.children[0].children[0]);
+      expect(root.fetchByPathKey("1,-1")).toEqual(root.children[0].children[1]);
+      expect(root.fetchByPathKey("-1")).toEqual(root.children[1]);
+      expect(root.fetchByPathKey("-1,1")).toEqual(null);
+      expect(root.fetchByPathKey("3")).toEqual(null);
+    });
+  });
+
   describe(".fetch", () => {
     it("returns the expected nodes", () => {
       expect(root).toEqual(root);

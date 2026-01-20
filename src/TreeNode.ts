@@ -48,6 +48,36 @@ export class TreeNode<T> {
   }
 
   /**
+   * Compressed path key: positive = run of first-children, negative = child index.
+   * e.g. [0,0,0,1,0,0] → "3,-1,2"
+   */
+  get pathKey(): string {
+    const indices = this.indices;
+    if (indices.length === 0) return '';
+
+    const parts: number[] = [];
+    let zeroCount = 0;
+
+    for (const idx of indices) {
+      if (idx === 0) {
+        zeroCount++;
+      } else {
+        if (zeroCount > 0) {
+          parts.push(zeroCount);
+          zeroCount = 0;
+        }
+        parts.push(-idx);
+      }
+    }
+
+    if (zeroCount > 0) {
+      parts.push(zeroCount);
+    }
+
+    return parts.join(',');
+  }
+
+  /**
    * Returns true if the node has children.
    */
   get hasChildren(): boolean {
@@ -106,6 +136,29 @@ export class TreeNode<T> {
       if (!node) return null;
     }
     return node || null;
+  }
+
+  /**
+   * Returns a node given a pathKey string.
+   * @see pathKey
+   */
+  fetchByPathKey(pathKey: string): TreeNode<T> | null {
+    if (pathKey === '') return this;
+
+    const indices: number[] = [];
+    const parts = pathKey.split(',').map(Number);
+
+    for (const part of parts) {
+      if (part >= 0) {
+        for (let i = 0; i < part; i++) {
+          indices.push(0);
+        }
+      } else {
+        indices.push(-part);
+      }
+    }
+
+    return this.fetch(indices);
   }
 
   /**
