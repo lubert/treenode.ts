@@ -43,8 +43,13 @@ export class TreeNode<T> {
    * Indices from the root to the node.
    */
   get indices(): number[] {
-    if (!this.parent) return []; // Root
-    return [...this.parent.indices, this.index];
+    const indices: number[] = [];
+    let node: TreeNode<T> | null = this;
+    while (node.parent) {
+      indices.push(node.index);
+      node = node.parent;
+    }
+    return indices.reverse();
   }
 
   /**
@@ -113,7 +118,7 @@ export class TreeNode<T> {
   }
 
   /**
-   * Returns a shallow-copy.
+   * Returns a deep copy of structure, shallow copy of model.
    */
   clone(): TreeNode<T> {
     const node = new TreeNode<T>(this.model);
@@ -135,7 +140,7 @@ export class TreeNode<T> {
       node = node.children[i];
       if (!node) return null;
     }
-    return node || null;
+    return node;
   }
 
   /**
@@ -166,12 +171,12 @@ export class TreeNode<T> {
    */
   path(): TreeNode<T>[] {
     const path: TreeNode<T>[] = [];
-    const addToPath = (node: TreeNode<T>) => {
-      path.unshift(node);
-      if (node.parent) addToPath(node.parent);
-    };
-    addToPath(this);
-    return path;
+    let node: TreeNode<T> | null = this;
+    while (node) {
+      path.push(node);
+      node = node.parent;
+    }
+    return path.reverse();
   }
 
   /**
@@ -205,9 +210,10 @@ export class TreeNode<T> {
    */
   breadth(callback: SearchCallback<T>): TreeNode<T> | null {
     const queue: TreeNode<T>[] = [this];
+    let head = 0;
 
-    while (queue.length) {
-      const node = queue.shift() as TreeNode<T>;
+    while (head < queue.length) {
+      const node = queue[head++];
       if (callback(node)) return node;
       for (let i = 0, childCount = node.children.length; i < childCount; i++) {
         queue.push(node.children[i]);
