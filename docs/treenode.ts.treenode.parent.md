@@ -4,7 +4,7 @@
 
 ## TreeNode.parent property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 parent: TreeNode<T> | null;

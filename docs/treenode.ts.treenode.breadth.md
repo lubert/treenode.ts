@@ -6,7 +6,7 @@
 
 Breadth-first search, return true in the callback to end iteration.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 breadth(callback: SearchCallback<T>): TreeNode<T> | null;
@@ -14,11 +14,39 @@ breadth(callback: SearchCallback<T>): TreeNode<T> | null;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  callback | [SearchCallback](./treenode.ts.searchcallback.md)<!-- -->&lt;T&gt; |  |
+<table><thead><tr><th>
 
-<b>Returns:</b>
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+callback
+
+
+</td><td>
+
+[SearchCallback](./treenode.ts.searchcallback.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
 
 [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt; \| null
 

@@ -4,7 +4,7 @@
 
 ## TreeNode.model property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 model: T;

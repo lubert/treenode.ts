@@ -4,14 +4,14 @@
 
 ## TreeNode.clone() method
 
-Returns a shallow-copy.
+Returns a deep copy of structure, shallow copy of model.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 clone(): TreeNode<T>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;
 

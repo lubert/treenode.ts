@@ -13,6 +13,9 @@ export interface IParseable<T> {
 }
 
 // @public
+export type NestedArray<T> = T | [T, ...(NestedArray<T> | T[])[]];
+
+// @public
 export type SearchCallback<T> = (node: TreeNode<T>) => boolean | void;
 
 // @public
@@ -27,24 +30,35 @@ export class TreeNode<T> {
     // (undocumented)
     children: TreeNode<T>[];
     clone(): TreeNode<T>;
+    get depth(): number;
     drop(): TreeNode<T>;
     fetch(indices: number[]): TreeNode<T> | null;
+    fetchByPathKey(pathKey: string): TreeNode<T> | null;
+    find(predicate: (node: TreeNode<T>) => boolean, method?: SearchStrategy): TreeNode<T> | null;
+    findAll(predicate: (node: TreeNode<T>) => boolean, method?: SearchStrategy): TreeNode<T>[];
     flatten(method: SearchStrategy): TreeNode<T>[];
+    static fromNestedArray<T>(input: NestedArray<T>): TreeNode<T>;
     get hasChildren(): boolean;
     get index(): number;
     get indices(): number[];
+    get isLeaf(): boolean;
+    get isRoot(): boolean;
     map<U>(callback: (node: TreeNode<T>) => U): TreeNode<U>;
+    mapAsync<U>(callback: (node: TreeNode<T>, parent: TreeNode<U> | undefined) => Promise<U>, parent?: TreeNode<U>): Promise<TreeNode<U>>;
     // (undocumented)
     model: T;
     // (undocumented)
     parent: TreeNode<T> | null;
     static parse<T>(tree: IParseable<T>): TreeNode<T>;
     path(): TreeNode<T>[];
+    get pathKey(): string;
     post(callback: SearchCallback<T>): TreeNode<T> | null;
     pre(callback: SearchCallback<T>): TreeNode<T> | null;
+    get root(): TreeNode<T>;
+    get siblings(): TreeNode<T>[];
+    toNestedArray(): NestedArray<T>;
     toObject(): IParseable<T>;
 }
-
 
 // (No @packageDocumentation comment for this package)
 

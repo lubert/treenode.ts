@@ -6,7 +6,7 @@
 
 Returns true if the node has children.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get hasChildren(): boolean;

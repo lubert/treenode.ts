@@ -5,7 +5,7 @@
 ## IParseable interface
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface IParseable<T> 
@@ -13,8 +13,60 @@ export interface IParseable<T>
 
 ## Properties
 
-|  Property | Type | Description |
-|  --- | --- | --- |
-|  [children](./treenode.ts.iparseable.children.md) | [IParseable](./treenode.ts.iparseable.md)<!-- -->&lt;T&gt;\[\] |  |
-|  [model](./treenode.ts.iparseable.model.md) | T |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[children](./treenode.ts.iparseable.children.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[IParseable](./treenode.ts.iparseable.md)<!-- -->&lt;T&gt;\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[model](./treenode.ts.iparseable.model.md)
+
+
+</td><td>
+
+
+</td><td>
+
+T
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
 

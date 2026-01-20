@@ -5,7 +5,7 @@
 ## TreeNode class
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare class TreeNode<T> 
@@ -13,36 +13,590 @@ export declare class TreeNode<T>
 
 ## Constructors
 
-|  Constructor | Modifiers | Description |
-|  --- | --- | --- |
-|  [(constructor)(model, parent, children)](./treenode.ts.treenode._constructor_.md) |  | Constructs a new instance of the <code>TreeNode</code> class |
+<table><thead><tr><th>
+
+Constructor
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[(constructor)(model, parent, children)](./treenode.ts.treenode._constructor_.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Constructs a new instance of the `TreeNode` class
+
+
+</td></tr>
+</tbody></table>
 
 ## Properties
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [children](./treenode.ts.treenode.children.md) |  | [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;\[\] |  |
-|  [hasChildren](./treenode.ts.treenode.haschildren.md) |  | boolean | Returns true if the node has children. |
-|  [index](./treenode.ts.treenode.index.md) |  | number | Index of the node among its siblings. |
-|  [indices](./treenode.ts.treenode.indices.md) |  | number\[\] | Indices from the root to the node. |
-|  [model](./treenode.ts.treenode.model.md) |  | T |  |
-|  [parent](./treenode.ts.treenode.parent.md) |  | [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt; \| null |  |
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[children](./treenode.ts.treenode.children.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;\[\]
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[depth](./treenode.ts.treenode.depth.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Returns the depth of the node (root is 0).
+
+
+</td></tr>
+<tr><td>
+
+[hasChildren](./treenode.ts.treenode.haschildren.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Returns true if the node has children.
+
+
+</td></tr>
+<tr><td>
+
+[index](./treenode.ts.treenode.index.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number
+
+
+</td><td>
+
+Index of the node among its siblings.
+
+
+</td></tr>
+<tr><td>
+
+[indices](./treenode.ts.treenode.indices.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+number\[\]
+
+
+</td><td>
+
+Indices from the root to the node.
+
+
+</td></tr>
+<tr><td>
+
+[isLeaf](./treenode.ts.treenode.isleaf.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Returns true if the node is a leaf (has no children).
+
+
+</td></tr>
+<tr><td>
+
+[isRoot](./treenode.ts.treenode.isroot.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+Returns true if the node is the root (has no parent).
+
+
+</td></tr>
+<tr><td>
+
+[model](./treenode.ts.treenode.model.md)
+
+
+</td><td>
+
+
+</td><td>
+
+T
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[parent](./treenode.ts.treenode.parent.md)
+
+
+</td><td>
+
+
+</td><td>
+
+[TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt; \| null
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[pathKey](./treenode.ts.treenode.pathkey.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+Compressed path key: positive = run of first-children, negative = child index. e.g. \[0,0,0,1,0,0\] -<!-- -->&gt; "3,-1,2"
+
+
+</td></tr>
+<tr><td>
+
+[root](./treenode.ts.treenode.root.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+Returns the root node of the tree.
+
+
+</td></tr>
+<tr><td>
+
+[siblings](./treenode.ts.treenode.siblings.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;\[\]
+
+
+</td><td>
+
+Returns siblings of this node (excluding self).
+
+
+</td></tr>
+</tbody></table>
 
 ## Methods
 
-|  Method | Modifiers | Description |
-|  --- | --- | --- |
-|  [add(child)](./treenode.ts.treenode.add.md) |  | Add node as a child. |
-|  [addModel(model)](./treenode.ts.treenode.addmodel.md) |  | Add model as a child. |
-|  [breadth(callback)](./treenode.ts.treenode.breadth.md) |  | Breadth-first search, return true in the callback to end iteration. |
-|  [clone()](./treenode.ts.treenode.clone.md) |  | Returns a shallow-copy. |
-|  [drop()](./treenode.ts.treenode.drop.md) |  | Remove current node and its children from the tree and return. |
-|  [fetch(indices)](./treenode.ts.treenode.fetch.md) |  | Returns a node given a list of indices |
-|  [flatten(method)](./treenode.ts.treenode.flatten.md) |  | Returns a list of nodes. |
-|  [map(callback)](./treenode.ts.treenode.map.md) |  | Iterates over a node's children and returns a new root node. |
-|  [parse(tree)](./treenode.ts.treenode.parse.md) | <code>static</code> | Parses object into a tree and returns the root node. |
-|  [path()](./treenode.ts.treenode.path.md) |  | Returns list of nodes to the root. |
-|  [post(callback)](./treenode.ts.treenode.post.md) |  | Depth-first post-order search, return true in the callback to end iteration. |
-|  [pre(callback)](./treenode.ts.treenode.pre.md) |  | Depth-first pre-order search, return true in the callback to end iteration. |
-|  [toObject()](./treenode.ts.treenode.toobject.md) |  | Returns an object representation of the tree. |
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[add(child)](./treenode.ts.treenode.add.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add node as a child.
+
+
+</td></tr>
+<tr><td>
+
+[addModel(model)](./treenode.ts.treenode.addmodel.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Add model as a child.
+
+
+</td></tr>
+<tr><td>
+
+[breadth(callback)](./treenode.ts.treenode.breadth.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Breadth-first search, return true in the callback to end iteration.
+
+
+</td></tr>
+<tr><td>
+
+[clone()](./treenode.ts.treenode.clone.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns a deep copy of structure, shallow copy of model.
+
+
+</td></tr>
+<tr><td>
+
+[drop()](./treenode.ts.treenode.drop.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Remove current node and its children from the tree and return.
+
+
+</td></tr>
+<tr><td>
+
+[fetch(indices)](./treenode.ts.treenode.fetch.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns a node given a list of indices
+
+
+</td></tr>
+<tr><td>
+
+[fetchByPathKey(pathKey)](./treenode.ts.treenode.fetchbypathkey.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns a node given a pathKey string.
+
+
+</td></tr>
+<tr><td>
+
+[find(predicate, method)](./treenode.ts.treenode.find.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Find the first node matching the predicate.
+
+
+</td></tr>
+<tr><td>
+
+[findAll(predicate, method)](./treenode.ts.treenode.findall.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Find all nodes matching the predicate.
+
+
+</td></tr>
+<tr><td>
+
+[flatten(method)](./treenode.ts.treenode.flatten.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns a list of nodes.
+
+
+</td></tr>
+<tr><td>
+
+[fromNestedArray(input)](./treenode.ts.treenode.fromnestedarray.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+Creates a tree from a nested array representation.
+
+
+</td></tr>
+<tr><td>
+
+[map(callback)](./treenode.ts.treenode.map.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Iterates over a node's children and returns a new root node.
+
+
+</td></tr>
+<tr><td>
+
+[mapAsync(callback, parent)](./treenode.ts.treenode.mapasync.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Iterates over a node's children and returns a new root node.
+
+
+</td></tr>
+<tr><td>
+
+[parse(tree)](./treenode.ts.treenode.parse.md)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+Parses object into a tree and returns the root node.
+
+
+</td></tr>
+<tr><td>
+
+[path()](./treenode.ts.treenode.path.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns list of nodes to the root.
+
+
+</td></tr>
+<tr><td>
+
+[post(callback)](./treenode.ts.treenode.post.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Depth-first post-order search, return true in the callback to end iteration.
+
+
+</td></tr>
+<tr><td>
+
+[pre(callback)](./treenode.ts.treenode.pre.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Depth-first pre-order search, return true in the callback to end iteration.
+
+
+</td></tr>
+<tr><td>
+
+[toNestedArray()](./treenode.ts.treenode.tonestedarray.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns a nested array representation of the tree. - Leaf -<!-- -->&gt; value - Single child -<!-- -->&gt; \[model, ...childResult\] - Multiple leaf children -<!-- -->&gt; \[model, \[leaves...\]\] - Multiple mixed children -<!-- -->&gt; \[model, child1Result, child2Result, ...\]
+
+
+</td></tr>
+<tr><td>
+
+[toObject()](./treenode.ts.treenode.toobject.md)
+
+
+</td><td>
+
+
+</td><td>
+
+Returns an object representation of the tree.
+
+
+</td></tr>
+</tbody></table>
 

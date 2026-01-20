@@ -6,7 +6,7 @@
 
 Iterates over a node's children and returns a new root node.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 map<U>(callback: (node: TreeNode<T>) => U): TreeNode<U>;
@@ -14,11 +14,39 @@ map<U>(callback: (node: TreeNode<T>) => U): TreeNode<U>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  callback | (node: [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;) =&gt; U |  |
+<table><thead><tr><th>
 
-<b>Returns:</b>
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+callback
+
+
+</td><td>
+
+(node: [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;) =&gt; U
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
 
 [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;U&gt;
 

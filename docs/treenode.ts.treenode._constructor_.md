@@ -6,7 +6,7 @@
 
 Constructs a new instance of the `TreeNode` class
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 constructor(model: T, parent?: TreeNode<T> | null, children?: TreeNode<T>[]);
@@ -14,9 +14,67 @@ constructor(model: T, parent?: TreeNode<T> | null, children?: TreeNode<T>[]);
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  model | T |  |
-|  parent | [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt; \| null |  |
-|  children | [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;\[\] |  |
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+model
+
+
+</td><td>
+
+T
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+parent
+
+
+</td><td>
+
+[TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt; \| null
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+<tr><td>
+
+children
+
+
+</td><td>
+
+[TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;\[\]
+
+
+</td><td>
+
+_(Optional)_
+
+
+</td></tr>
+</tbody></table>
 

@@ -6,7 +6,7 @@
 
 Indices from the root to the node.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get indices(): number[];

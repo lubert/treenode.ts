@@ -6,7 +6,7 @@
 
 Add model as a child.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 addModel(model: T): TreeNode<T>;
@@ -14,11 +14,39 @@ addModel(model: T): TreeNode<T>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  model | T |  |
+<table><thead><tr><th>
 
-<b>Returns:</b>
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+model
+
+
+</td><td>
+
+T
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
 
 [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;
 

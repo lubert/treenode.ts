@@ -6,7 +6,7 @@
 
 Index of the node among its siblings.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 get index(): number;

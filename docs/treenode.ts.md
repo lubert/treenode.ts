@@ -6,20 +6,99 @@
 
 ## Classes
 
-|  Class | Description |
-|  --- | --- |
-|  [TreeNode](./treenode.ts.treenode.md) |  |
+<table><thead><tr><th>
+
+Class
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[TreeNode](./treenode.ts.treenode.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Interfaces
 
-|  Interface | Description |
-|  --- | --- |
-|  [IParseable](./treenode.ts.iparseable.md) |  |
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[IParseable](./treenode.ts.iparseable.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
 
 ## Type Aliases
 
-|  Type Alias | Description |
-|  --- | --- |
-|  [SearchCallback](./treenode.ts.searchcallback.md) | Search callback passed to <code>.pre</code>, <code>.post</code>, and <code>.breadth</code>. |
-|  [SearchStrategy](./treenode.ts.searchstrategy.md) | Search methods on TreeNode, passed to <code>.flatten</code>. |
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[NestedArray](./treenode.ts.nestedarray.md)
+
+
+</td><td>
+
+Nested array representation of a tree.
+
+
+</td></tr>
+<tr><td>
+
+[SearchCallback](./treenode.ts.searchcallback.md)
+
+
+</td><td>
+
+Search callback passed to `.pre`<!-- -->, `.post`<!-- -->, and `.breadth`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[SearchStrategy](./treenode.ts.searchstrategy.md)
+
+
+</td><td>
+
+Search methods on TreeNode, passed to `.flatten`<!-- -->.
+
+
+</td></tr>
+</tbody></table>
 

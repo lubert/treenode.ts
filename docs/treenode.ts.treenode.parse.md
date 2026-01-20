@@ -6,7 +6,7 @@
 
 Parses object into a tree and returns the root node.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 static parse<T>(tree: IParseable<T>): TreeNode<T>;
@@ -14,11 +14,39 @@ static parse<T>(tree: IParseable<T>): TreeNode<T>;
 
 ## Parameters
 
-|  Parameter | Type | Description |
-|  --- | --- | --- |
-|  tree | [IParseable](./treenode.ts.iparseable.md)<!-- -->&lt;T&gt; |  |
+<table><thead><tr><th>
 
-<b>Returns:</b>
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+tree
+
+
+</td><td>
+
+[IParseable](./treenode.ts.iparseable.md)<!-- -->&lt;T&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
+**Returns:**
 
 [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;
 

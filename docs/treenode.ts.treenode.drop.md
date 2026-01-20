@@ -6,12 +6,12 @@
 
 Remove current node and its children from the tree and return.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 drop(): TreeNode<T>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;
 

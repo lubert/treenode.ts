@@ -6,8 +6,8 @@
 
 Search methods on TreeNode, passed to `.flatten`<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type SearchStrategy = "pre" | "post" | "breadth";
+export type SearchStrategy = "pre" | "post" | "breadth";
 ```

@@ -6,12 +6,12 @@
 
 Returns list of nodes to the root.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 path(): TreeNode<T>[];
 ```
-<b>Returns:</b>
+**Returns:**
 
 [TreeNode](./treenode.ts.treenode.md)<!-- -->&lt;T&gt;\[\]
 

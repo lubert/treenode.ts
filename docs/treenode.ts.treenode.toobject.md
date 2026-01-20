@@ -6,12 +6,12 @@
 
 Returns an object representation of the tree.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 toObject(): IParseable<T>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 [IParseable](./treenode.ts.iparseable.md)<!-- -->&lt;T&gt;
 

@@ -6,10 +6,10 @@
 
 Search callback passed to `.pre`<!-- -->, `.post`<!-- -->, and `.breadth`<!-- -->.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type SearchCallback<T> = (node: TreeNode<T>) => boolean | void;
+export type SearchCallback<T> = (node: TreeNode<T>) => boolean | void;
 ```
-<b>References:</b> [TreeNode](./treenode.ts.treenode.md)
+**References:** [TreeNode](./treenode.ts.treenode.md)
 
