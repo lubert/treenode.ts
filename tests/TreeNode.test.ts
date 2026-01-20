@@ -34,6 +34,113 @@ describe("TreeNode", () => {
       expect(root.children[0].index).toEqual(0);
       expect(root.children[1].index).toEqual(1);
     });
+
+    it("returns 0 for root node", () => {
+      expect(root.index).toEqual(0);
+    });
+
+    it("updates correctly when adding children", () => {
+      const node = new TreeNode<string>("root");
+      const a = node.addModel("a");
+      const b = node.addModel("b");
+      const c = node.addModel("c");
+      expect(a.index).toEqual(0);
+      expect(b.index).toEqual(1);
+      expect(c.index).toEqual(2);
+    });
+
+    it("updates subsequent siblings when dropping first child", () => {
+      const node = new TreeNode<string>("root");
+      const a = node.addModel("a");
+      const b = node.addModel("b");
+      const c = node.addModel("c");
+      a.drop();
+      expect(b.index).toEqual(0);
+      expect(c.index).toEqual(1);
+    });
+
+    it("updates subsequent siblings when dropping middle child", () => {
+      const node = new TreeNode<string>("root");
+      const a = node.addModel("a");
+      const b = node.addModel("b");
+      const c = node.addModel("c");
+      b.drop();
+      expect(a.index).toEqual(0);
+      expect(c.index).toEqual(1);
+    });
+
+    it("does not affect earlier siblings when dropping last child", () => {
+      const node = new TreeNode<string>("root");
+      const a = node.addModel("a");
+      const b = node.addModel("b");
+      const c = node.addModel("c");
+      c.drop();
+      expect(a.index).toEqual(0);
+      expect(b.index).toEqual(1);
+    });
+
+    it("resets to 0 when dropped", () => {
+      const node = new TreeNode<string>("root");
+      const a = node.addModel("a");
+      node.addModel("b");
+      const c = node.addModel("c");
+      expect(c.index).toEqual(2);
+      c.drop();
+      expect(c.index).toEqual(0);
+      a.drop();
+      expect(a.index).toEqual(0);
+    });
+
+    it("works correctly on cloned tree", () => {
+      const clone = root.clone();
+      expect(clone.children[0].index).toEqual(0);
+      expect(clone.children[1].index).toEqual(1);
+      expect(clone.children[0].children[0].index).toEqual(0);
+      expect(clone.children[0].children[1].index).toEqual(1);
+    });
+
+    it("works correctly on mapped tree", () => {
+      const mapped = root.map((node) => node.model + "!");
+      expect(mapped.children[0].index).toEqual(0);
+      expect(mapped.children[1].index).toEqual(1);
+      expect(mapped.children[0].children[0].index).toEqual(0);
+      expect(mapped.children[0].children[1].index).toEqual(1);
+    });
+
+    it("works correctly on async mapped tree", async () => {
+      const mapped = await root.mapAsync(async (node) => node.model + "!");
+      expect(mapped.children[0].index).toEqual(0);
+      expect(mapped.children[1].index).toEqual(1);
+      expect(mapped.children[0].children[0].index).toEqual(0);
+      expect(mapped.children[0].children[1].index).toEqual(1);
+    });
+
+    it("handles multiple drops correctly", () => {
+      const node = new TreeNode<string>("root");
+      const a = node.addModel("a");
+      const b = node.addModel("b");
+      const c = node.addModel("c");
+      const d = node.addModel("d");
+      const e = node.addModel("e");
+
+      // Drop from middle
+      c.drop();
+      expect(a.index).toEqual(0);
+      expect(b.index).toEqual(1);
+      expect(d.index).toEqual(2);
+      expect(e.index).toEqual(3);
+
+      // Drop first
+      a.drop();
+      expect(b.index).toEqual(0);
+      expect(d.index).toEqual(1);
+      expect(e.index).toEqual(2);
+
+      // Drop last
+      e.drop();
+      expect(b.index).toEqual(0);
+      expect(d.index).toEqual(1);
+    });
   });
 
   describe(".indices", () => {

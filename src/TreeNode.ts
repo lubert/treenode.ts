@@ -16,6 +16,8 @@ export type SearchStrategy = "pre" | "post" | "breadth";
  * @public
  */
 export class TreeNode<T> {
+  private _index: number = 0;
+
   constructor(
     public model: T,
     public parent: TreeNode<T> | null = null,
@@ -35,8 +37,7 @@ export class TreeNode<T> {
    * Index of the node among its siblings.
    */
   get index(): number {
-    if (!this.parent) return 0;
-    return this.parent.children.indexOf(this);
+    return this._index;
   }
 
   /**
@@ -94,6 +95,7 @@ export class TreeNode<T> {
    */
   add(child: TreeNode<T>): TreeNode<T> {
     child.parent = this;
+    child._index = this.children.length;
     this.children.push(child);
     return child;
   }
@@ -110,9 +112,14 @@ export class TreeNode<T> {
    */
   drop(): TreeNode<T> {
     if (this.parent !== null) {
-      const idx = this.parent.children.indexOf(this);
+      const idx = this._index;
       this.parent.children.splice(idx, 1);
+      // Update indices of subsequent siblings
+      for (let i = idx; i < this.parent.children.length; i++) {
+        this.parent.children[i]._index = i;
+      }
       this.parent = null;
+      this._index = 0;
     }
     return this;
   }
@@ -122,9 +129,10 @@ export class TreeNode<T> {
    */
   clone(): TreeNode<T> {
     const node = new TreeNode<T>(this.model);
-    node.children = this.children.map((child) => {
+    node.children = this.children.map((child, i) => {
       const newChild = child.clone();
       newChild.parent = node;
+      newChild._index = i;
       return newChild;
     });
     return node;
@@ -184,9 +192,10 @@ export class TreeNode<T> {
    */
   map<U>(callback: (node: TreeNode<T>) => U): TreeNode<U> {
     const node = new TreeNode<U>(callback(this));
-    node.children = this.children.map((child) => {
+    node.children = this.children.map((child, i) => {
       const newChild = child.map(callback);
       newChild.parent = node;
+      newChild._index = i;
       return newChild;
     });
     return node;
@@ -197,9 +206,10 @@ export class TreeNode<T> {
    */
   async mapAsync<U>(callback: (node: TreeNode<T>, parent?: TreeNode<U>) => Promise<U>, parent?: TreeNode<U>): Promise<TreeNode<U>>{
     const node = new TreeNode<U>(await callback(this, parent));
-    node.children = await Promise.all(this.children.map(async (child) => {
+    node.children = await Promise.all(this.children.map(async (child, i) => {
       const newChild = await child.mapAsync(callback, node);
       newChild.parent = node;
+      newChild._index = i;
       return newChild;
     }));
     return node;
