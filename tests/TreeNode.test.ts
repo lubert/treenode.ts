@@ -215,6 +215,14 @@ describe("TreeNode", () => {
       expect(mapModel(copy, "breadth")).toEqual(["1", "11", "12", "112"]);
       expect(mapModel(node, "breadth")).toEqual(["111"]);
     });
+
+    it("does nothing when dropping root node", () => {
+      const node = new TreeNode<string>("root");
+      node.addModel("child");
+      const returned = node.drop();
+      expect(returned).toBe(node);
+      expect(node.children.length).toEqual(1);
+    });
   });
 
   describe(".clone", () => {
@@ -267,17 +275,65 @@ describe("TreeNode", () => {
         "112",
       ]);
     });
+
+    it("returns node when callback returns true", () => {
+      const found = root.breadth((node) => node.model === "111");
+      expect(found?.model).toEqual("111");
+    });
+
+    it("returns null when node not found", () => {
+      const found = root.breadth((node) => node.model === "nonexistent");
+      expect(found).toBeNull();
+    });
   });
 
   describe(".pre", () => {
     it("traverses correctly", () => {
       expect(mapModel(root, "pre")).toEqual(["1", "11", "111", "112", "12"]);
     });
+
+    it("returns node when callback returns true", () => {
+      const found = root.pre((node) => node.model === "112");
+      expect(found?.model).toEqual("112");
+    });
+
+    it("returns null when node not found", () => {
+      const found = root.pre((node) => node.model === "nonexistent");
+      expect(found).toBeNull();
+    });
+
+    it("returns early when found in child subtree", () => {
+      const visited: string[] = [];
+      root.pre((node) => {
+        visited.push(node.model);
+        return node.model === "111";
+      });
+      expect(visited).toEqual(["1", "11", "111"]);
+    });
   });
 
   describe(".post", () => {
     it("traverses correctly", () => {
       expect(mapModel(root, "post")).toEqual(["111", "112", "11", "12", "1"]);
+    });
+
+    it("returns node when callback returns true", () => {
+      const found = root.post((node) => node.model === "11");
+      expect(found?.model).toEqual("11");
+    });
+
+    it("returns null when node not found", () => {
+      const found = root.post((node) => node.model === "nonexistent");
+      expect(found).toBeNull();
+    });
+
+    it("returns early when found in child subtree", () => {
+      const visited: string[] = [];
+      root.post((node) => {
+        visited.push(node.model);
+        return node.model === "112";
+      });
+      expect(visited).toEqual(["111", "112"]);
     });
   });
 
