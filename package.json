@@ -3,13 +3,21 @@
   "version": "0.7.0",
   "description": "Tree-like data structure for typescript",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "build:api": "npm run build && api-extractor run --local --verbose",
     "build:docs": "npm run build:api && api-documenter markdown --input ./temp --output ./docs",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prepare": "tsc",
+    "prepare": "npm run build",
     "test": "jest",
     "test:coverage": "jest --coverage"
   },
@@ -35,7 +43,7 @@
     "eslint": "^8.57.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.6",
+    "tsup": "^8.5.1",
     "typescript": "^5.7.3"
-  },
-  "dependencies": {}
+  }
 }
