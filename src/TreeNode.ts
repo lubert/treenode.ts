@@ -23,12 +23,23 @@ export type NestedArray<T> = T | [T, ...(NestedArray<T> | T[])[]];
  */
 export class TreeNode<T> {
   private _index: number = 0;
+  private _children: TreeNode<T>[] = [];
 
   constructor(
     public model: T,
     public parent: TreeNode<T> | null = null,
-    public children: TreeNode<T>[] = []
-  ) {}
+    children: TreeNode<T>[] = []
+  ) {
+    this._children = children;
+  }
+
+  /**
+   * Returns the children of the node as a readonly array.
+   * Use add(), drop(), or swap() to modify children.
+   */
+  get children(): readonly TreeNode<T>[] {
+    return this._children;
+  }
 
   /**
    * Parses object into a tree and returns the root node.
@@ -93,7 +104,7 @@ export class TreeNode<T> {
    * Returns true if the node has children.
    */
   get hasChildren(): boolean {
-    return this.children.length > 0;
+    return this._children.length > 0;
   }
 
   /**
@@ -139,19 +150,55 @@ export class TreeNode<T> {
 
   /**
    * Add node as a child.
+   * @param child - The node to add
+   * @param index - Optional index to insert at. If omitted, appends to end.
+   * @throws RangeError if index is out of bounds (negative or > children.length)
    */
-  add(child: TreeNode<T>): TreeNode<T> {
+  add(child: TreeNode<T>, index?: number): TreeNode<T> {
     child.parent = this;
-    child._index = this.children.length;
-    this.children.push(child);
+    if (index === undefined) {
+      // Append at end
+      child._index = this._children.length;
+      this._children.push(child);
+    } else {
+      // Validate index
+      if (index < 0 || index > this._children.length) {
+        throw new RangeError(`Invalid index: ${index}. Valid range: 0 to ${this._children.length}`);
+      }
+      // Insert at specific index
+      this._children.splice(index, 0, child);
+      // Update indices for inserted and subsequent siblings
+      for (let i = index; i < this._children.length; i++) {
+        this._children[i]._index = i;
+      }
+    }
     return child;
   }
 
   /**
-   * Add model as a child.
+   * Swap children at indices i and j.
+   * @param i - First index
+   * @param j - Second index
    */
-  addModel(model: T): TreeNode<T> {
-    return this.add(new TreeNode<T>(model));
+  swap(i: number, j: number): void {
+    if (i < 0 || j < 0 || i >= this._children.length || j >= this._children.length) {
+      throw new RangeError(`Invalid indices: ${i}, ${j}. Children length: ${this._children.length}`);
+    }
+    if (i === j) return;
+    const temp = this._children[i];
+    this._children[i] = this._children[j];
+    this._children[j] = temp;
+    this._children[i]._index = i;
+    this._children[j]._index = j;
+  }
+
+  /**
+   * Add model as a child.
+   * @param model - The model to add
+   * @param index - Optional index to insert at. If omitted, appends to end.
+   */
+  addModel(model: T, index?: number): TreeNode<T> {
+    return this.add(new TreeNode<T>(model), index);
   }
 
   /**
@@ -160,10 +207,11 @@ export class TreeNode<T> {
   drop(): TreeNode<T> {
     if (!this.isRoot) {
       const idx = this._index;
-      this.parent!.children.splice(idx, 1);
+      const parentChildren = (this.parent as TreeNode<T>)._children;
+      parentChildren.splice(idx, 1);
       // Update indices of subsequent siblings
-      for (let i = idx; i < this.parent!.children.length; i++) {
-        this.parent!.children[i]._index = i;
+      for (let i = idx; i < parentChildren.length; i++) {
+        parentChildren[i]._index = i;
       }
       this.parent = null;
       this._index = 0;
@@ -176,7 +224,7 @@ export class TreeNode<T> {
    */
   clone(): TreeNode<T> {
     const node = new TreeNode<T>(this.model);
-    node.children = this.children.map((child, i) => {
+    node._children = this._children.map((child, i) => {
       const newChild = child.clone();
       newChild.parent = node;
       newChild._index = i;
@@ -239,7 +287,7 @@ export class TreeNode<T> {
    */
   map<U>(callback: (node: TreeNode<T>) => U): TreeNode<U> {
     const node = new TreeNode<U>(callback(this));
-    node.children = this.children.map((child, i) => {
+    node._children = this._children.map((child, i) => {
       const newChild = child.map(callback);
       newChild.parent = node;
       newChild._index = i;
@@ -253,7 +301,7 @@ export class TreeNode<T> {
    */
   async mapAsync<U>(callback: (node: TreeNode<T>, parent: TreeNode<U> | undefined) => Promise<U>, parent?: TreeNode<U>): Promise<TreeNode<U>>{
     const node = new TreeNode<U>(await callback(this, parent));
-    node.children = await Promise.all(this.children.map(async (child, i) => {
+    node._children = await Promise.all(this._children.map(async (child, i) => {
       const newChild = await child.mapAsync(callback, node);
       newChild.parent = node;
       newChild._index = i;
