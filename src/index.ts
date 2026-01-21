@@ -1,2 +1,2 @@
-export { TreeNode, SearchCallback, SearchStrategy, NestedArray } from './TreeNode';
+export { TreeNode, SearchCallback, SearchStrategy } from './TreeNode';
 export { IParseable } from './IParseable';
