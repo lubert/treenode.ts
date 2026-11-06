@@ -576,4 +576,71 @@ describe("TreeNode", () => {
       expect(tree).toEqual(root.toObject());
     });
   });
+
+  describe(".toFlat", () => {
+    it("lists models and child counts in pre-order", () => {
+      expect(root.toFlat()).toEqual({
+        models: ["1", "11", "111", "112", "12"],
+        childCounts: [2, 2, 0, 0, 0],
+      });
+    });
+
+    it("encodes a subtree from its own root", () => {
+      expect(root.children[0].toFlat()).toEqual({
+        models: ["11", "111", "112"],
+        childCounts: [2, 0, 0],
+      });
+    });
+  });
+
+  describe(".fromFlat", () => {
+    const shape = (node: TreeNode<unknown>) =>
+      node
+        .flatten("pre")
+        .map((n) => `${n.indices.join(".")}:${n.model}:${n.parent?.model}`);
+
+    it("rebuilds the tree toFlat encoded", () => {
+      const back = TreeNode.fromFlat(root.toFlat());
+      expect(back.toObject()).toEqual(tree);
+      expect(shape(back)).toEqual(shape(root));
+    });
+
+    it("rebuilds a lone root", () => {
+      const back = TreeNode.fromFlat({ models: ["x"], childCounts: [0] });
+      expect(back.model).toBe("x");
+      expect(back.parent).toBeNull();
+      expect(back.children).toHaveLength(0);
+    });
+
+    it("handles a chain deeper than the call stack allows", () => {
+      const depth = 100000;
+      const flat = {
+        models: Array.from({ length: depth }, (_, i) => i),
+        childCounts: Array.from({ length: depth }, (_, i) =>
+          i < depth - 1 ? 1 : 0
+        ),
+      };
+      let node = TreeNode.fromFlat(flat);
+      let seen = 1;
+      while (node.children.length > 0) {
+        node = node.children[0];
+        seen++;
+      }
+      expect(seen).toBe(depth);
+      // Back again without recursing either.
+      let top = node;
+      while (top.parent) top = top.parent;
+      expect(top.toFlat()).toEqual(flat);
+    });
+
+    it("rejects counts that do not match the models", () => {
+      expect(() =>
+        TreeNode.fromFlat({ models: ["a", "b"], childCounts: [2, 0] })
+      ).toThrow();
+      expect(() =>
+        TreeNode.fromFlat({ models: ["a", "b"], childCounts: [0, 0] })
+      ).toThrow();
+      expect(() => TreeNode.fromFlat({ models: [], childCounts: [] })).toThrow();
+    });
+  });
 });

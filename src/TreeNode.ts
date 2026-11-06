@@ -1,3 +1,4 @@
+import { IFlatTree } from "./IFlatTree";
 import { IParseable } from "./IParseable";
 
 /**
@@ -43,6 +44,35 @@ export class TreeNode<T> {
     const node = new TreeNode(tree.model);
     tree.children.forEach((child) => node.add(TreeNode.parse(child)));
     return node;
+  }
+
+  /**
+   * Rebuilds the tree that {@link TreeNode.toFlat} encoded and returns the
+   * root node. Iterative, so any depth works. Throws if the child counts do
+   * not account for exactly the models given.
+   */
+  static fromFlat<T>(flat: IFlatTree<T>): TreeNode<T> {
+    const { models, childCounts } = flat;
+    if (models.length === 0 || childCounts.length !== models.length) {
+      throw new Error("Invalid flat tree");
+    }
+    const root = new TreeNode(models[0]);
+    // Nodes still owed children from the pre-order stream, deepest last.
+    const open: { node: TreeNode<T>; left: number }[] = [
+      { node: root, left: childCounts[0] },
+    ];
+    for (let i = 1; i < models.length; i++) {
+      while (open.length > 0 && open[open.length - 1].left === 0) open.pop();
+      const parent = open[open.length - 1];
+      if (!parent) throw new Error("Invalid flat tree");
+      parent.left--;
+      const child = parent.node.add(new TreeNode(models[i]));
+      open.push({ node: child, left: childCounts[i] });
+    }
+    if (open.some((entry) => entry.left > 0)) {
+      throw new Error("Invalid flat tree");
+    }
+    return root;
   }
 
   /**
@@ -388,5 +418,25 @@ export class TreeNode<T> {
       model: this.model,
       children: this.children.map((child) => child.toObject()),
     };
+  }
+
+  /**
+   * Returns a flat representation of the tree: models and child counts in
+   * pre-order. Iterative, so any depth works. See {@link IFlatTree}.
+   */
+  toFlat(): IFlatTree<T> {
+    const models: T[] = [];
+    const childCounts: number[] = [];
+    const stack: TreeNode<T>[] = [this];
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+      models.push(node.model);
+      childCounts.push(node._children.length);
+      // Reversed, so the first child comes off the stack first.
+      for (let i = node._children.length - 1; i >= 0; i--) {
+        stack.push(node._children[i]);
+      }
+    }
+    return { models, childCounts };
   }
 }
